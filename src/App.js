@@ -1,6 +1,7 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import uuid4 from 'uuid4';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -13,41 +14,54 @@ class App extends React.Component {
   }
 
   handleChange = (event) => {
-    const {value} = event.target;
-    this.setState({category: value});
+    const { value } = event.target;
+    this.setState({ category: value });
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
 
-    let today = new Date();
+    const today = new Date();
 
-    let myGarage = {
+    const myGarage = {
       category: this.state.category,
       id: uuid4(),
-      timeStamp: today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
+      timeStamp: `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`,
     };
 
     this.props.createNewCategory(myGarage);
   };
 
-  handleDelete = (event) => {
+  handleDelete = (event, id) => {
     event.preventDefault();
+    this.props.deleteCategory(id);
+  };
 
-    this.props.deleteCategory(this.state.id);
+  handleUpdate = (event, id) => {
+    const updates = {};
+    updates.id = id;
+    updates.value = this.state.category;
+    this.props.updateCategory(updates);
+    this.handleChange(event);
   };
 
   render() {
     return (
       <>
         {
-          this.props.categories.map((myGarage, i) =>
-            <li key={i} >{myGarage.category + ': ' + myGarage.id + ' - ' + myGarage.timeStamp}
-              <form onSubmit={this.handleDelete}>
-            <button type='submit'> Remove a car from your garage </button>
-              </form>
-            </li>
-          )
+          this.props.categories.map((myGarage, i) => <li key={i} >{`${myGarage.category}: ${myGarage.id} - ${myGarage.timeStamp}`}
+              <button
+                onClick={event => this.handleDelete(event, myGarage.id) }
+                type='submit'> Remove a car from your garage
+              </button>
+              <button
+                onClick={event => this.handleUpdate(event, myGarage.id) }
+                type='submit'
+                onChange={this.handleChange}
+                > Update this car in your garage
+
+              </button>
+            </li>)
         }
 
         <form onSubmit={this.handleSubmit}>
@@ -68,18 +82,24 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
   return {
     categories: state.categories,
-  }
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createNewCategory : (categoryName) => {
+    createNewCategory: (categoryName) => {
       dispatch({
         type: 'CATEGORY_CREATE',
         payload: categoryName,
       });
     },
-    deleteCategory : (id) => {
+    updateCategory: (updates) => {
+      dispatch({
+        type: 'CATEGORY_UPDATE',
+        payload: updates,
+      });
+    },
+    deleteCategory: (id) => {
       dispatch({
         type: 'CATEGORY_DELETE',
         payload: id,
