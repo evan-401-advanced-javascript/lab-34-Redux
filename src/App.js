@@ -2,7 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import uuid4 from 'uuid4';
 
-
+/**
+ * Main functionality of the app
+ * Has methods for changing the input box, pressing the button, deleting and updating items.
+ * Renders the UI and dispatches to the reducer
+ */
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -57,7 +61,6 @@ class App extends React.Component {
               <button
                 onClick={event => this.handleUpdate(event, myGarage.id) }
                 type='submit'
-                onChange={this.handleChange}
                 > Update this car in your garage
 
               </button>

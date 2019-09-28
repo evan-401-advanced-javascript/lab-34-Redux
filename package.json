@@ -20,7 +20,9 @@
     "uuid": "3.3.2",
     "uuid4": "^1.1.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "react-styleguidist": "^9.1.16"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

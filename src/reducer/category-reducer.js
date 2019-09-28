@@ -1,3 +1,11 @@
+/**
+ * Reducer called by different methods in app.js. Takes in type and a payload and can either create, update or delete categories.
+ * @param state
+ * @param type
+ * @param payload
+ * @returns {*[]|Array}
+ */
+
 export default (state = [], { type, payload }) => {
   switch (type) {
     case 'CATEGORY_CREATE':
