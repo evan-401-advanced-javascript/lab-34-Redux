@@ -14,7 +14,8 @@ export default (state = [], { type, payload }) => {
       state.map((car) => {
         if (car.id === payload.id) {
           car.category = payload.value;
-          return state;
+          return car;
+          //return state.map(car => car.id === payload.id ? payload : car);
         }
       });
       return state;
